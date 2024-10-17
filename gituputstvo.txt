@@ -1,0 +1,15 @@
+git config --global user.name "Jana Mitrovic"
+
+git config --global user.email "mitrovicjana@gmail.com"
+
+git clone https://github.com/janamitrovic2/Apoteka.git  // izvrsava se samo jednom - prvi put
+
+
+
+git add .   // za stejdzovanje svih lokalnih promena
+
+git commit -m "neka porukica"   // za commitovanje svih lokalnih promena
+
+git push -u origin master   // za publishovanje promena na github
+
+git pull   // za skidanje promena s githuba koje je neko drugi napravio na tvoj racunar
