@@ -13,3 +13,5 @@ git commit -m "neka porukica"   // za commitovanje svih lokalnih promena
 git push -u origin master   // za publishovanje promena na github
 
 git pull   // za skidanje promena s githuba koje je neko drugi napravio na tvoj racunar
+
+git fetch ne znam cemu sluzi al msm da je koristan
