@@ -9,6 +9,20 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model Bills {
+  bill_id String @id() @default(uuid())
+  med_count1 Int @default(0)
+  med_count2 Int @default(0)
+  med_count3 Int @default(0)
+  heard_from String
+}
+
+model Medicines {
+  medicine_id Int @id() @default(autoincrement())
+  name String
+  cost Int
 }

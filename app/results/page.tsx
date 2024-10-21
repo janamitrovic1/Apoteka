@@ -2,6 +2,8 @@
 
 import { useSearchParams } from 'next/navigation';
 
+import './style.css';
+
 export default function ResultsPage() {
   const searchParams = useSearchParams();
   const lek1 = searchParams.get('lek1');
@@ -32,12 +34,19 @@ export default function ResultsPage() {
   };
 
   return (
-    <div style={styles.container}>
-      <h1 style={styles.header}>Rezultati unosa:</h1>
-      <div style={styles.result}>Lek 1: {lek1}</div>
-      <div style={styles.result}>Lek 2: {lek2}</div>
-      <div style={styles.result}>Lek 3: {lek3}</div>
-      <div style={styles.result}>Culi ste za nas od: {izvor}</div>
+    // <div style={styles.container}>
+    //   <h1 style={styles.header}>Rezultati unosa:</h1>
+    //   <div style={styles.result}>Lek 1: {lek1}</div>
+    //   <div style={styles.result}>Lek 2: {lek2}</div>
+    //   <div style={styles.result}>Lek 3: {lek3}</div>
+    //   <div style={styles.result}>Culi ste za nas od: {izvor}</div>
+    // </div>
+    <div className='container'>
+      <h1 className='header'>Rezultati unosa:</h1>
+      <div className='result'>Lek 1: {lek1}</div>
+      <div className='result'>Lek 2: {lek2}</div>
+      <div className='result'>Lek 3: {lek3}</div>
+      <div className='result'>Culi ste za nas od: {izvor}</div>
     </div>
   );
 }
