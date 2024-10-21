@@ -6,7 +6,7 @@ export async function POST(req: Request) {
         
         const result = await prisma.bills.create({ data: data});
         console.log(result);
-        
+
         return Response.json({ message: "Successfully made bill!" });
     } catch (error) {
         return Response.json({ok: false, err: error})
