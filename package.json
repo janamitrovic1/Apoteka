@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "node --loader ts-node/esm prisma/seed.ts"
+    "seed": "npx ts-node prisma/seed.js"
   },
   "dependencies": {
     "@prisma/client": "^5.21.0",
