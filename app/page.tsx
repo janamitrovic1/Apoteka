@@ -1,11 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 export default function Home() {
-  const router = useRouter();
   const [medicines, setMedicines] = useState<{name: string}[]>([]);
   const [bills, setBills] = useState<{bill_id: string, heard_from: string}[]>([])
   const [formData, setFormData] = useState({
@@ -17,7 +15,6 @@ export default function Home() {
 
   const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(formData);
     const result = await fetch("http://localhost:3000/api/bill", {
       method: "POST",
       body: JSON.stringify({
