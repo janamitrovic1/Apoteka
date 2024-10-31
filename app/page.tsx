@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function Home() {
   const router = useRouter();
   const [medicines, setMedicines] = useState<{name: string}[]>([]);
+  const [bills, setBills] = useState<{bill_id: string, heard_from: string}[]>([])
   const [formData, setFormData] = useState({
     lek1: 0,
     lek2: 0,
@@ -46,15 +48,27 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const run = async() => {
+    const run1 = async() => {
       const result = await fetch("http://localhost:3000/api/medicine");
       const { data } = await result.json();
       setMedicines(data);
     }
-    run();
+    const run2 = async() => {
+      const result = await fetch("http://localhost:3000/api/bill");
+      const { data } = await result.json();
+      setBills(data);
+      console.log(data, "dataa");
+    }
+    run1();
+    run2();
   }, [])
 
+  useEffect(() => {
+    console.log(bills)
+  }, [bills])
+
   return (
+    <>
     <div style={{
       
       backgroundColor: '#f0f0f0',  // Svetla pozadina
@@ -67,6 +81,7 @@ export default function Home() {
     }}>
       <h1 style={{ textAlign: 'center' }}>Apoteka</h1>
       <form onSubmit={handleSubmit}>
+        { medicines.length >= 1 && 
         <div style={{ marginBottom: '10px' }}>
           <label htmlFor="lek1">Koliko Vam je potrebno {medicines[0]?.name}-a?</label>
           <input
@@ -78,8 +93,9 @@ export default function Home() {
             style={{ width: '100%', padding: '8px' }}
             required
           />
-        </div>
+        </div>}
 
+        { medicines.length >= 2 && 
         <div style={{ marginBottom: '10px' }}>
           <label htmlFor="lek2">Koliko Vam je potrebno {medicines[1]?.name}-a?</label>
           <input
@@ -91,20 +107,21 @@ export default function Home() {
             style={{ width: '100%', padding: '8px' }}
             required
           />
-        </div>
+        </div>}
 
+        {medicines.length >= 3 && 
         <div style={{ marginBottom: '10px' }}>
-          <label htmlFor="lek3">Koliko Vam je potrebno {medicines[2]?.name}-a?</label>
-          <input
-            type="number"
-            id="lek3"
-            name="lek3"
-            value={formData.lek3}
-            onChange={handleChange}
-            style={{ width: '100%', padding: '8px' }}
-            required
-          />
-        </div>
+            <label htmlFor="lek3">Koliko Vam je potrebno {medicines[2]?.name}-a?</label>
+            <input
+              type="number"
+              id="lek3"
+              name="lek3"
+              value={formData.lek3}
+              onChange={handleChange}
+              style={{ width: '100%', padding: '8px' }}
+              required
+            />
+        </div>}
 
         <div style={{ marginBottom: '10px' }}>
           <p>Culi ste za nas od:</p>
@@ -144,6 +161,17 @@ export default function Home() {
 
         <button type="submit" style={{ padding: '10px 20px' }}>Pošalji</button>
       </form>
+      
     </div>
+
+    {bills?.length > 0 &&
+    <div>
+      {bills.map(bill => (
+        <div>
+          <Link href={"/" + bill.bill_id} key={bill.bill_id}>{bill.bill_id} - Heard From: {bill.heard_from}</Link>
+        </div>
+      ))}
+    </div>}
+    </>
   );
 }
