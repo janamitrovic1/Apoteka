@@ -1,27 +1,40 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const router = useRouter();
+  const [medicines, setMedicines] = useState<{name: string}[]>([]);
   const [formData, setFormData] = useState({
-    lek1: '',
-    lek2: '',
-    lek3: '',
-    izvor: '',
+    lek1: 0,
+    lek2: 0,
+    lek3: 0,
+    izvor: 0,
   });
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const queryParams = new URLSearchParams({
-      lek1: formData.lek1,
-      lek2: formData.lek2,
-      lek3: formData.lek3,
-      izvor: formData.izvor,
-    });
+    console.log(formData);
+    const result = await fetch("http://localhost:3000/api/bill", {
+      method: "POST",
+      body: JSON.stringify({
+        med_count1: parseInt(formData.lek1.toString()),
+        med_count2: parseInt(formData.lek2.toString()),
+        med_count3: parseInt(formData.lek3.toString()),
+        heard_from: formData.izvor
+      })
+    })
+    const data = await result.json();
+    console.log(data);
+    // const queryParams = new URLSearchParams({
+    //   lek1: formData.lek1,
+    //   lek2: formData.lek2,
+    //   lek3: formData.lek3,
+    //   izvor: formData.izvor,
+    // });
 
-    router.push(`/results?${queryParams.toString()}`);
+    // router.push(`/results?${queryParams.toString()}`);
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,6 +44,15 @@ export default function Home() {
       [name]: value,
     }));
   };
+
+  useEffect(() => {
+    const run = async() => {
+      const result = await fetch("http://localhost:3000/api/medicine");
+      const { data } = await result.json();
+      setMedicines(data);
+    }
+    run();
+  }, [])
 
   return (
     <div style={{
@@ -46,9 +68,9 @@ export default function Home() {
       <h1 style={{ textAlign: 'center' }}>Apoteka</h1>
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: '10px' }}>
-          <label htmlFor="lek1">Koji lek naručujete?</label>
+          <label htmlFor="lek1">Koliko Vam je potrebno {medicines[0]?.name}-a?</label>
           <input
-            type="text"
+            type="number"
             id="lek1"
             name="lek1"
             value={formData.lek1}
@@ -59,9 +81,9 @@ export default function Home() {
         </div>
 
         <div style={{ marginBottom: '10px' }}>
-          <label htmlFor="lek2">Koji lek naručujete?</label>
+          <label htmlFor="lek2">Koliko Vam je potrebno {medicines[1]?.name}-a?</label>
           <input
-            type="text"
+            type="number"
             id="lek2"
             name="lek2"
             value={formData.lek2}
@@ -72,9 +94,9 @@ export default function Home() {
         </div>
 
         <div style={{ marginBottom: '10px' }}>
-          <label htmlFor="lek3">Koji lek naručujete?</label>
+          <label htmlFor="lek3">Koliko Vam je potrebno {medicines[2]?.name}-a?</label>
           <input
-            type="text"
+            type="number"
             id="lek3"
             name="lek3"
             value={formData.lek3}
