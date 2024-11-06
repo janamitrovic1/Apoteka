@@ -1,10 +1,14 @@
 import { prisma } from "@/prisma/seed";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function POST(req: Request) {
     try {
         const data = await req.json();
         const result = await prisma.bills.create({ data });
 
+        revalidatePath("/");
+        revalidateTag("/");
+        
         return Response.json({ data: result, ok: true });
     } catch (error) {
         console.log(error);

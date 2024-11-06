@@ -15,7 +15,7 @@ export default function Home() {
 
   const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const result = await fetch("http://localhost:3000/api/bill", {
+    await fetch("http://localhost:3000/api/bill", {
       method: "POST",
       body: JSON.stringify({
         med_count1: parseInt(formData.lek1.toString()),
@@ -24,8 +24,16 @@ export default function Home() {
         heard_from: formData.izvor
       })
     })
-    const data = await result.json();
-    console.log(data);
+
+    getBills();
+
+    setFormData({
+      lek1: 0,
+      lek2: 0,
+      lek3: 0,
+      izvor: 0,
+    });
+
     // const queryParams = new URLSearchParams({
     //   lek1: formData.lek1,
     //   lek2: formData.lek2,
@@ -44,20 +52,21 @@ export default function Home() {
     }));
   };
 
+  const getBills = async() => {
+    const result = await fetch("http://localhost:3000/api/bill");
+    const { data } = await result.json();
+    setBills(data);
+    console.log(data, "dataa");
+  }
+
   useEffect(() => {
-    const run1 = async() => {
+    const run = async() => {
       const result = await fetch("http://localhost:3000/api/medicine");
       const { data } = await result.json();
       setMedicines(data);
     }
-    const run2 = async() => {
-      const result = await fetch("http://localhost:3000/api/bill");
-      const { data } = await result.json();
-      setBills(data);
-      console.log(data, "dataa");
-    }
-    run1();
-    run2();
+    run();
+    getBills();
   }, [])
 
   useEffect(() => {
